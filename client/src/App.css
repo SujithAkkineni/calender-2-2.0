@@ -1,0 +1,59 @@
+.App {
+  font-family: Arial, sans-serif;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+form {
+  margin-bottom: 20px;
+}
+
+input, textarea {
+  display: block;
+  margin: 10px 0;
+  padding: 8px;
+  width: 100%;
+}
+
+button {
+  padding: 8px 16px;
+  margin: 5px;
+}
+
+.calendar {
+  margin-top: 20px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+}
+
+.day-header {
+  padding: 10px;
+  font-weight: bold;
+}
+
+.day {
+  border: 1px solid #ddd;
+  min-height: 100px;
+  padding: 5px;
+}
+
+.empty {
+  background-color: #f9f9f9;
+}
+
+.event {
+  background-color: #e0f7fa;
+  margin: 2px 0;
+  padding: 2px;
+  font-size: 12px;
+}
