@@ -1,33 +1,24 @@
-# Use Maven image to build the application
-FROM maven:3.9.11-eclipse-temurin-21 AS build
+# Use a Node.js image, not a Java/Maven image!
+FROM node:18-alpine
 
-# Set working directory
-WORKDIR /app
+# Set the working directory inside the container
+WORKDIR /usr/src/app
 
-# Copy pom.xml and download dependencies
-# Added destination './' to COPY command and removed space
-COPY pom.xml ./
-RUN mvn dependency:go-offline -B
+# Copy the backend package.json files first
+COPY package*.json ./
 
-# Copy source code
-COPY src ./src
+# Install the backend dependencies
+RUN npm install
 
-# Build the application (skip tests for faster build)
-RUN mvn clean package -DskipTests
+# Copy the rest of the repository code (including 'client' and 'server.js')
+COPY . .
 
-# Use JDK image to run the application
-FROM eclipse-temurin:21-jre
+# Run the build script defined in your backend package.json
+# (This automatically drops into the 'client' folder, runs npm install, and builds React)
+RUN npm run build
 
-# Set working directory
-WORKDIR /app
+# Expose the port your server runs on
+EXPOSE 5000
 
-# Copy the jar file from build stage
-# Removed spaces inside '*. jar' and 'app. jar'
-COPY --from=build /app/target/*.jar app.jar
-
-# Expose port 8080
-EXPOSE 8080
-
-# Run the application
-# Removed spaces and formatted array properly
-ENTRYPOINT ["java", "-jar", "app.jar"]
+# Start the Node.js server
+CMD [ "npm", "start" ]
